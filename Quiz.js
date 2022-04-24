@@ -1,7 +1,9 @@
 import React from "react";
 import {nanoid} from "nanoid";
+import GlobalState from '../GlobalState'
 
 export default function Quiz(props){
+    const [state, setState] = React.useContext(GlobalState)
 
 
     function shuffle(array) {
@@ -59,12 +61,16 @@ function decodeEntities(s){
     temp=null;
     return str;
 }
-
+React.useEffect(() => {
+    
+    setState(state => ({...state, count: state.count + 1}))
+  }, [props.quizCompleted]);
 
     const choicesAfteSubmission = freshArray.map(choice => {
         function determineColor(){
         if (choice.isHeld) {
             if (choice.id === freshArray.find(user => user.correctChoice === true).id){
+                
                 return "#94D7A2"
             }else{
                 return "#F8BCBC"
