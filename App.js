@@ -1,7 +1,8 @@
 import './App.css';
-import Quiz from './Quiz';
+import Quiz from './components/Quiz';
 import React from 'react';
 import {nanoid} from "nanoid"
+import GlobalState from './GlobalState.js'; 
 
 function App() {
 
@@ -10,6 +11,8 @@ function App() {
 const [questions, setQuestions] = React.useState([])
 
 const [quizCompleted, setQuizCompleted] =React.useState(false)
+const [state, setState] = React.useState({})
+
 
 /*function getQuestions() {
   const question = questions.question
@@ -39,6 +42,7 @@ console.log(questions)
 
 const questionsArray = questions.map(ques => {
   return(
+    <GlobalState.Provider value={[state, setState]}>
   <Quiz
   //questionName = {ques.question}
   //correctAnswer = {ques.correct_answer}
@@ -47,9 +51,11 @@ const questionsArray = questions.map(ques => {
   quizCompleted = {quizCompleted}
   key= {ques.id}
   />
+  </GlobalState.Provider>
 )})
 
   return (
+    
     <main>{
       true ? 
       <div>
@@ -60,7 +66,7 @@ const questionsArray = questions.map(ques => {
       <div className='quizContainer'>
       {questionsArray}
       </div>
-      <button onClick = {showAnswers} className='submit'>Check Answers</button>
+      <button onClick = {showAnswers} className='submit'>{quizCompleted ? `You got ${state.count} / 5 correct`:"Check Answers"}</button>
       </div>
       :
       <div>
@@ -76,6 +82,7 @@ const questionsArray = questions.map(ques => {
       </div>
 }
     </main>
+    
   );
 }
 
